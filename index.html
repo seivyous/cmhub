@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CMH - Car Parts Explorer</title>
+  <meta name="author" content="Yves Toledo" />
+  <link rel="icon" type="image/x-icon" href="/images/car-repair.png" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans&display=swap" rel="stylesheet" />
+
+  <style>
+    body {
+      font-family: "DM Sans", sans-serif;
+      margin: 0;
+      padding: 0;
+      background: url('https://i.pinimg.com/736x/3d/02/13/3d0213324d884ce61c00cab816d382ab.jpg');
+      background-size: cover;
+      background-attachment: fixed;
+      color: #222;
+    }
+
+    .container {
+      max-width: 850px;
+      margin: 2rem auto;
+      padding: 2rem;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 12px;
+      box-shadow: 0 0 25px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 0.25rem;
+      color: #333;
+    }
+
+    h2 {
+      font-size: 1.25rem;
+      margin-bottom: 1rem;
+      color: #666;
+    }
+
+    a {
+      color: #555;
+      text-decoration: none;
+      margin: 0 10px;
+    }
+
+    form {
+      margin-bottom: 2rem;
+    }
+
+    select, input[type="text"], input[type="email"], input[type="number"], textarea {
+      padding: 10px;
+      font-size: 1rem;
+      margin: 0.5rem 0;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      width: 90%;
+      max-width: 400px;
+      background-color: #fefefe;
+    }
+
+    .buttons {
+      padding: 10px 20px;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: none;
+      margin: 0.5rem;
+      background-color: #999;
+      color: white;
+      cursor: pointer;
+      transition: 0.3s ease-in-out;
+    }
+
+    .buttons:hover {
+      background-color: #666;
+      transform: scale(1.05);
+    }
+
+    .parts-list {
+      text-align: left;
+      margin-top: 2rem;
+      padding: 1.5rem;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background-color: rgba(255, 255, 255, 0.8);
+    }
+
+    fieldset {
+      border: none;
+      padding: 0;
+      margin-bottom: 1.5rem;
+    }
+
+    legend {
+      font-weight: bold;
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+      color: #444;
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin: 1rem 0 0.3rem;
+    }
+
+    #model-container {
+      margin-top: 1rem;
+    }
+
+    textarea {
+      resize: vertical;
+    }
+
+    hr {
+      margin: 2rem 0;
+      border-top: 2px dashed #bbb;
+    }
+
+    table {
+      margin: 2rem auto;
+      border-collapse: collapse;
+      width: 100%;
+      max-width: 700px;
+      background-color: #fff;
+    }
+
+    th, td {
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: center;
+    }
+
+    th {
+      background-color: #f0f0f0;
+    }
+
+    #receipt {
+      display: none;
+      text-align: left;
+      margin-top: 2rem;
+      background: #fff;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>CMHub - Your Car Part Explorer</h1>
+    <h2>Welcome to CMHub – your one-stop shop for car part needs!</h2>
+    <p>
+      <a href="https://shopee.ph/Car-Storage-Net-Organizer-with-Easy-Adhesive-Installation-i.1086735678.28285241203" target="_blank">Visit Our Shop</a> |
+      <a href="https://example.com/faq" target="_blank">FAQs</a> 
+    </p>
+
+    <form id="googleForm">
+      <label for="brand">Select your car brand:</label>
+      <select id="brand" name="brand" onchange="updateModelDropdown()" required>
+        <option value="">-- Choose a Brand --</option>
+        <option value="Toyota">Toyota</option>
+        <option value="Honda">Honda</option>
+        <option value="Suzuki">Suzuki</option>
+        <option value="Nissan">Nissan</option>
+        <option value="Mitsubishi">Mitsubishi</option>
+        <option value="Kia">Kia</option>
+        <option value="Hyundai">Hyundai</option>
+        <option value="Ford">Ford</option>
+      </select>
+
+      <div id="model-container" style="display: none;">
+        <label for="model">Select your car model:</label>
+        <select id="model" name="model"></select>
+      </div>
+
+      <div class="parts-list">
+        <div id="parts-list-section"></div>
+
+        <fieldset>
+          <legend>Condition</legend>
+          <input type="radio" name="condition" value="Brand New" required> Brand New<br>
+          <input type="radio" name="condition" value="2nd Hand"> 2nd Hand<br>
+          <input type="radio" name="condition" value="Used"> Used<br>
+        </fieldset>
+
+        <fieldset>
+          <legend>Preferred Payment Method</legend>
+          <input type="radio" name="payment" value="Cash" required> Cash<br>
+          <input type="radio" name="payment" value="Bank Transfer"> Bank Transfer<br>
+          <input type="radio" name="payment" value="Credit/Debit Card"> Credit/Debit Card<br>
+          <input type="radio" name="payment" value="E-Wallet(Gcash/Maya)"> E-Wallet (Gcash/Maya)<br>
+          <input type="radio" name="payment" value="Cheque"> Cheque<br>
+        </fieldset>
+
+        <hr>
+
+        <fieldset>
+          <legend>Contact Information</legend>
+          <label for="name">Name:</label>
+          <input type="text" name="name" required>
+
+          <label for="email">Email:</label>
+          <input type="email" name="email">
+
+          <label for="number">Contact Number:</label>
+          <input type="number" name="number">
+        </fieldset>
+
+        <fieldset>
+          <legend>Additional Notes</legend>
+          <textarea name="comments" rows="5" cols="50" placeholder="Tell us more about what you need at CMHub..."></textarea>
+        </fieldset>
+      </div>
+
+      <div>
+        <input type="reset" class="buttons" value="Reset Form">
+        <input type="submit" class="buttons" value="Submit Survey">
+      </div>
+    </form>
+
+    <div id="receipt"></div>
+
+    <h3>Sample Inventory Table</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Part Name</th>
+          <th>Brand</th>
+          <th>Price (₱)</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Rear Wing</td><td>Toyota</td><td>4500</td><td>Available</td></tr>
+        <tr><td>Spoiler</td><td>Honda</td><td>3000</td><td>Out of Stock</td></tr>
+        <tr><td>Spark Plug</td><td>Ford</td><td>500</td><td>Available</td></tr>
+        <tr><td>Body Kit</td><td>Mitsubishi</td><td>8000</td><td>Available</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    const modelDropdown = document.getElementById('model');
+    const modelContainer = document.getElementById('model-container');
+
+    const carModels = {
+      Toyota: ["Innova", "Fortuner", "Vios", "Hilux"],
+      Honda: ["Civic", "CR-V", "City", "Brio"],
+      Suzuki: ["Ertiga", "Jimny", "Swift", "S-Presso"],
+      Nissan: ["Almera", "Navara", "Terra", "Patrol"],
+      Mitsubishi: ["Mirage", "Montero", "L300", "Xpander"],
+      Kia: ["Sportage", "Picanto", "Seltos", "Carnival"],
+      Hyundai: ["Tucson", "Accent", "Stargazer", "Elantra"],
+      Ford: ["Mustang", "Ranger", "Everest", "Territory"]
+    };
+
+    function updateModelDropdown() {
+      const selectedBrand = document.getElementById('brand').value;
+      modelDropdown.innerHTML = "";
+      if (selectedBrand && carModels[selectedBrand]) {
+        modelContainer.style.display = "block";
+        carModels[selectedBrand].forEach(model => {
+          const option = document.createElement("option");
+          option.value = model;
+          option.textContent = model;
+          modelDropdown.appendChild(option);
+        });
+      } else {
+        modelContainer.style.display = "none";
+      }
+    }
+
+    const parts = ["Rear Wing", "Spoiler", "Spark Plug", "Body Kit"];
+    const partsContainer = document.getElementById('parts-list-section');
+    let partsHTML = "<fieldset><legend>Available Parts:</legend><p>Select preferred car part(s):</p>";
+    parts.forEach(part => {
+      partsHTML += `<input type="checkbox" name="car-parts" value="${part}"> ${part}<br>`;
+    });
+    partsHTML += "</fieldset>";
+    partsContainer.innerHTML = partsHTML;
+
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbwV0MzfFjufWdqq81Nau3Z3bUrnG90ATK-9tlMrS7wCR6mlXH5BkZuWxuSxK7iK8VOJOw/exec';
+    const form = document.getElementById('googleForm');
+
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+
+      const formData = new FormData(form);
+      fetch(scriptURL, { method: 'POST', body: formData })
+        .then(response => {
+          const name = form.name.value;
+          const email = form.email.value;
+          const number = form.number.value;
+          const brand = form.brand.value;
+          const model = form.model.value;
+          const condition = form.condition.value;
+          const payment = form.payment.value;
+          const comments = form.comments.value;
+          const selectedParts = [...document.querySelectorAll('input[name="car-parts"]:checked')]
+            .map(cb => cb.value).join(', ') || 'None';
+          alert('Form submitted successfully! Print your receipt below.');
+          printReceipt(name, email, number, brand, model, selectedParts, condition, payment, comments);
+          form.reset();
+          modelContainer.style.display = 'none';
+        })
+        .catch(error => {
+          alert('Error submitting form.');
+          console.error('Error!', error.message);
+        });
+    });
+
+    function printReceipt(name, email, number, brand, model, parts, condition, payment, comments) {
+      const receiptDiv = document.getElementById("receipt");
+      const date = new Date().toLocaleString();
+      
+      receiptDiv.innerHTML = `
+        <h3>🧾 Order Receipt</h3>
+        <p><strong>Date:</strong> ${date}</p>
+        <p><strong>Name:</strong> ${name}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Contact Number:</strong> ${number}</p>
+        <p><strong>Brand:</strong> ${brand}</p>
+        <p><strong>Model:</strong> ${model}</p>
+        <p><strong>Parts:</strong> ${parts}</p>
+        <p><strong>Condition:</strong> ${condition}</p>
+        <p><strong>Payment Method:</strong> ${payment}</p>
+        <p><strong>Notes:</strong> ${comments}</p>
+        <p><em>Thank you for ordering with CMHub!</em></p>
+        <button onclick="window.print()">🖨️ Print Receipt</button>
+      `;
+      receiptDiv.style.display = 'block';
+    }
+  </script>
+</body>
+</html>
